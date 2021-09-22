@@ -3,6 +3,8 @@ ansible-playbook -i inventory kubernetes.yaml -u antonio  -K
 
 ansible-playbook -i v2Inventory v2Kubernetes.yaml -u antonio  -K
 
+ansible-playbook -i v2Inventory alias.yaml -u antonio  -K
+
 1) change hostname
 2) change ip
 3) reinstall OpenSSH apt remove openssh-server
