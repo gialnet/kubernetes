@@ -1,0 +1,11 @@
+[KubernetesInstall]
+kube-server-01
+kube-server-02
+kube-server-03
+
+[KubernetesInstallNodes]
+kube-server-02
+kube-server-03
+
+[KubernetesInstallMaster]
+kube-server-01

@@ -1,0 +1,7 @@
+[KubernetesInstall]
+kube2-01
+kube2-02
+kube2-03
+
+[KubernetesInstallMaster]
+kube2-01

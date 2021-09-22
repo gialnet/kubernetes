@@ -1,0 +1,13 @@
+---
+ - name: master.yaml
+   hosts: KubernetesInstallMaster
+   become: yes
+   become_user: root
+
+   tasks:
+     - name: create master, # Enable kubelet service
+       shell: |
+         systemctl enable kubelet
+         kubeadm config images pull
+
+

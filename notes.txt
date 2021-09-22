@@ -1,0 +1,63 @@
+
+ansible-playbook -i inventory kubernetes.yaml -u antonio  -K
+
+ansible-playbook -i v2Inventory v2Kubernetes.yaml -u antonio  -K
+
+1) change hostname
+2) change ip
+3) reinstall OpenSSH apt remove openssh-server
+4) apt install openssh-server
+
+ kubeadm init --pod-network-cidr=10.244.0.0/16
+
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Alternatively, if you are the root user, you can run:
+
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join 192.168.0.47:6443 --token wnwxje.pprufz64a0zueo8l \
+        --discovery-token-ca-cert-hash sha256:204c8ffac9feb96a008bc34ccf463eab6fc42b100037e7b904186137ee0b2e1d
+
+
+
+
+**********************************************
+root@kube-ser-01:~# kubeadm init --pod-network-cidr=10.244.0.0/16
+
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Alternatively, if you are the root user, you can run:
+
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join 192.168.0.41:6443 --token jubcyu.ccneqri8pqkswp6n \
+        --discovery-token-ca-cert-hash sha256:664f68fee4bb80d698147e3fbe79d522161fbc49b4514145c4b767fed40ffc1a
+root@kube-ser-01:~# export KUBECONFIG=/etc/kubernetes/admin.conf
+
+mkdir .kube
+scp antonio@kube-ser-01:~/.kube/config .kube/config

@@ -1,0 +1,10 @@
+---
+ - name: setupVM.yaml
+   become: yes
+   become_user: root
+
+   tasks:
+   # setup /etc/hosts
+   # setup /etc/hostname
+    - name: "Setup a VM"
+

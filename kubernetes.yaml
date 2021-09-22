@@ -1,0 +1,70 @@
+---
+ - name: kubernetes.yaml
+   gather_facts: yes
+   hosts: KubernetesInstallNodes
+   become: yes
+   become_user: root
+
+   tasks:
+
+   - name: Install kubelet, kubeadm and kubectl
+     shell: |
+        apt -y install curl apt-transport-https
+        curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+        echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list
+        apt update
+        apt -y install vim git curl wget kubelet kubeadm kubectl
+        apt-mark hold kubelet kubeadm kubectl
+        kubectl version --client && kubeadm version
+
+   - name: Disable Swap
+     shell:
+        swapoff -a
+
+   # systemctl --type swap to check if swap is disabled
+   - name: Disable swap permanently
+     lineinfile:
+      path: /etc/fstab
+      regex: '^/swap.img'
+      line: '#/swap.img       none    swap    sw      0       0'
+      owner: root
+      group: root
+
+   - name: Configure sysctl
+     shell: |
+        modprobe overlay
+        modprobe br_netfilter
+        tee /etc/sysctl.d/kubernetes.conf<<EOF
+        net.bridge.bridge-nf-call-ip6tables = 1
+        net.bridge.bridge-nf-call-iptables = 1
+        net.ipv4.ip_forward = 1
+        EOF
+
+   - name: Configure Docker Repository
+     shell: |
+      apt update
+      apt install -y curl gnupg2 software-properties-common apt-transport-https ca-certificates
+      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+      add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+   - name: Install Docker binary
+     shell: |
+      apt update
+      apt install -y containerd.io docker-ce docker-ce-cli
+      mkdir -p /etc/systemd/system/docker.service.d
+      tee /etc/docker/daemon.json <<EOF
+       {
+        "exec-opts": ["native.cgroupdriver=systemd"],
+        "log-driver": "json-file",
+        "log-opts": {
+        "max-size": "100m"
+       },
+       "storage-driver": "overlay2"
+      }
+      EOF
+      systemctl enable docker
+      systemctl daemon-reload
+      systemctl restart docker  
+      
+
+
