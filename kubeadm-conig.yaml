@@ -1,0 +1,9 @@
+apiVersion: kubeadm.k8s.io/v1beta3
+kind: ClusterConfiguration
+controllerManager:
+  extraArgs:
+    cluster-signing-cert-file: /etc/kubernetes/pki/ca.crt
+    cluster-signing-key-file: /etc/kubernetes/pki/ca.key
+clusterName: "dev-cluster"
+networking:
+  podSubnet: 10.244.0.0/16

@@ -63,3 +63,30 @@ root@kube-ser-01:~# export KUBECONFIG=/etc/kubernetes/admin.conf
 
 mkdir .kube
 scp antonio@kube-ser-01:~/.kube/config .kube/config
+
+
+
+****************
+
+** en todos los nodos
+sudo kubeadm reset  cleanup-node
+
+sudo kubectl delete node ...
+
+** onle check
+sudo kubeadm init phase preflight --config kubeadm-config.yaml
+
+** start init
+sudo kubeadm init --config kubeadm-config.yaml
+
+
+
+kubeadm join 192.168.0.41:6443 --token l633ct.4ri4uwl907qiimuk \
+ --discovery-token-ca-cert-hash sha256:43411b7ade4a2f3c465c6ed493844fddffd19eec7cf7555ce88ec878dc394747
+ 
+ --- install cilium
+curl -L --remote-name-all https://github.com/cilium/cilium-cli/releases/latest/download/cilium-linux-amd64.tar.gz{,.sha256sum}
+sha256sum --check cilium-linux-amd64.tar.gz.sha256sum
+sudo tar xzvfC cilium-linux-amd64.tar.gz /usr/local/bin
+rm cilium-linux-amd64.tar.gz{,.sha256sum}
+
