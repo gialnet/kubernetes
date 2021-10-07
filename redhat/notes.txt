@@ -80,3 +80,5 @@ kubeadm join 192.168.0.61:6443 --token tmcw3c.kw8yru2a5erzfqrk \
 kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
 kubectl create -f https://docs.projectcalico.org/manifests/custom-resources.yaml
 
+crictl images
+crictl pods
